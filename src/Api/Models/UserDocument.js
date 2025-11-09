@@ -1,12 +1,12 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../Config/Database/db.config');
 const User = require('./User');
-const Cases = require('./Cases');
+const Course = require('./Course');
 
 const UserDocument = sequelize.MAIN_DB_NAME.define(
   'UserDocument',
   {
-    id: {
+    user_doc_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -16,15 +16,15 @@ const UserDocument = sequelize.MAIN_DB_NAME.define(
       allowNull: true,
       references: {
         model: User,
-        key: 'id',
+        key: 'user_id',
       },
     },
-    case_id: {
+    course_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: Cases,
-        key: 'id',
+        model: Course,
+        key: 'course_id',
       },
     },
     document_type: {
@@ -59,7 +59,7 @@ const UserDocument = sequelize.MAIN_DB_NAME.define(
       allowNull: true,
       references: {
         model: User,
-        key: 'id',
+        key: 'user_id',
       },
     },
     is_active: {

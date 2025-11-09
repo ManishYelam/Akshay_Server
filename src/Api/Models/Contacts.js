@@ -4,7 +4,7 @@ const { sequelize } = require('../../Config/Database/db.config');
 const Contact = sequelize.MAIN_DB_NAME.define(
   'Contact',
   {
-    id: {
+    contact_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,

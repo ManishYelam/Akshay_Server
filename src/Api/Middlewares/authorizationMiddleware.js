@@ -3,7 +3,7 @@ const { verifyToken } = require('../../Utils/jwtSecret');
 const { User } = require('../Models/Association');
 const useragent = require('useragent');
 
-const authMiddleware = async (req, res, next) => {
+exports.authenticate = async (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress || req.connection.remoteAddress || req.ip;
   const user_agent = req.get('User-Agent') || 'unknown';
@@ -73,4 +73,14 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+exports.authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access forbidden: Insufficient permissions',
+      });
+    }
+    next();
+  };
+};

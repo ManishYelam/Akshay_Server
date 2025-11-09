@@ -4,7 +4,7 @@ const {
   ApplicationProperties,
   ListOfValues,
   Organization,
-  Cases,
+  Course,
   Contact,
   Payment,
   UserDocument,
@@ -13,6 +13,10 @@ const {
   TicketAttachment,
   Feedback,
   FAQ,
+  Enrollment,
+  Testimonial,
+  Blog,
+  DemoRequest,
 } = require('./Association');
 
 module.exports = {
@@ -25,7 +29,11 @@ module.exports = {
         ApplicationProperties.sync({ alter: false }),
         ListOfValues.sync({ alter: false }),
         Organization.sync({ alter: false }),
-        Cases.sync({ alter: false }),
+        Course.sync({ alter: false }),
+        Enrollment.sync({ alter: false }),
+        Testimonial.sync({ alter: false }),
+        Blog.sync({ alter: false }),
+        DemoRequest.sync({ alter: false }),
         Contact.sync({ alter: false }),
         Payment.sync({ alter: false }),
         UserDocument.sync({ alter: false }),

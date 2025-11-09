@@ -9,25 +9,24 @@ const { User, UserLog, Role, Permission, Organization } = require('../Models/Ass
 const AuthService = {
   login: async (email, password, clientIp, userAgent) => {
     try {
-      // Fetch user with associated role
-      const user = await User.findOne({
-        where: { email },
-      });
+      const user = await User.findOne({ where: { email } });
 
-      if (!user) throw new Error('⚠️ Oops! The email or password you entered is incorrect. Please try again.');
+      if (!user) {
+        throw new Error('⚠️ Oops! The email or password you entered is incorrect. Please try again.');
+      }
 
-      // Validate password
-      const isValidPassword = await comparePassword(password, user.password);
-      if (!isValidPassword)
+      const isValidPassword = await user.checkPassword(password);
+
+      if (!isValidPassword) {
         throw new Error('🔒 Incorrect password! Please check and try again. If you forgot your password, reset it.');
-      // if (!user.isVerified)
-      //   throw new Error('🚀 Your account is not verified yet! Please check your email and verify your account before logging in.');
-      if (user.status !== 'active')
-        throw new Error('⛔ Your account is currently inactive. Please contact support for assistance.');
+      }
 
-      // Extract necessary user data for the token
+      if (user.status !== 'active') {
+        throw new Error('⛔ Your account is currently inactive. Please contact support for assistance.');
+      }
+
       const user_info = {
-        id: user.id,
+        user_id: user.user_id,
         email: user.email,
         full_name: user.full_name,
         role: user.role,
@@ -39,33 +38,10 @@ const AuthService = {
         user_metadata: user.user_metadata ?? {},
       };
 
-      console.log(user_info);
-
-      // Generate JWT token
-      const token = generateToken(user_info); // Fixed function call
-
-      // Update user login status in a single database query
-      await user.update({
-        logged_in_status: true,
-        last_login_at: new Date(),
-        token,
-        expiresAt: new Date(Date.now() + 12 * 60 * 60 * 1000), // 12 hours
-        expiredAt: null,
-      });
-
-      // Remove token field from the user object before returning
+      const token = generateToken(user_info);
+      await user.updateLoginStatus(token);
       const userResponse = { ...user.get({ plain: true }) };
-      delete userResponse.token; // Remove token from response
-
-      const logData = {
-        user_id: user.id,
-        source_ip: clientIp,
-        device: userAgent,
-        related_info: `Session start & end times`,
-        jwt_token: token,
-        action: 'login',
-      };
-
+      delete userResponse.token;
       return { token, user: userResponse };
     } catch (error) {
       console.error('Login error:', error.message);

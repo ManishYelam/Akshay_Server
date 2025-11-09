@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../Config/Database/db.config');
+const bcrypt = require('bcrypt');
 
 const userAttribute = {
-  id: {
+  user_id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -70,7 +71,7 @@ const userAttribute = {
   },
   profile_image: {
     type: DataTypes.STRING(500),
-    allowNull: true
+    allowNull: true,
   },
   isVerified: {
     type: DataTypes.BOOLEAN,
@@ -120,28 +121,38 @@ const User = sequelize.MAIN_DB_NAME.define('User', userAttribute, {
   tableName: 'tbl_user',
   timestamps: true,
   hooks: {
-    beforeCreate: async (user) => {
+    beforeCreate: async user => {
       if (user.password) {
         user.password = await bcrypt.hash(user.password, 12);
       }
     },
-    beforeUpdate: async (user) => {
+    beforeUpdate: async user => {
       if (user.changed('password')) {
         user.password = await bcrypt.hash(user.password, 12);
       }
-    }
-  }
+    },
+  },
 });
 
-User.prototype.checkPassword = async function(candidatePassword) {
+User.prototype.checkPassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-User.prototype.toJSON = function() {
+User.prototype.toJSON = function () {
   const values = Object.assign({}, this.get());
   delete values.password;
   delete values.metadata;
   return values;
+};
+
+User.prototype.updateLoginStatus = async function (token) {
+  return await this.update({
+    logged_in_status: true,
+    last_login_at: new Date(),
+    token,
+    expiresAt: new Date(Date.now() + 12 * 60 * 60 * 1000), // 12 hours
+    expiredAt: null,
+  });
 };
 
 module.exports = User;

@@ -1,22 +1,22 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../Config/Database/db.config');
 const User = require('./User');
-const Cases = require('./Cases');
+const Enrollment = require('./Enrollment');
 
 const Payment = sequelize.MAIN_DB_NAME.define(
   'Payment',
   {
-    id: {
+    payment_id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
     },
-    case_id: {
+    enrollment_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: Cases,
-        key: 'id',
+        model: Enrollment,
+        key: 'enrollment_id',
       },
     },
     client_id: {
@@ -24,7 +24,7 @@ const Payment = sequelize.MAIN_DB_NAME.define(
       allowNull: false,
       references: {
         model: User,
-        key: 'id',
+        key: 'user_id',
       },
     },
     order_id: {
@@ -105,6 +105,10 @@ const Payment = sequelize.MAIN_DB_NAME.define(
       type: DataTypes.JSON,
       allowNull: true,
       comment: 'Extra payment metadata',
+    },
+    metadata: {
+      type: DataTypes.JSON,
+      defaultValue: {},
     },
   },
   {

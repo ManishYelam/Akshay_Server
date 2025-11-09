@@ -1,6 +1,8 @@
 // models/SupportCenter.js
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../Config/Database/db.config');
+const User = require('./User');
+const Course = require('./Course');
 
 // Ticket number generator function
 const generateTicketNumber = () => {
@@ -22,8 +24,8 @@ const SupportTicket = sequelize.MAIN_DB_NAME.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users', // Use string reference to avoid circular dependency
-        key: 'id',
+        model: User, // Use string reference to avoid circular dependency
+        key: 'user_id',
       },
     },
     ticket_number: {
@@ -55,12 +57,12 @@ const SupportTicket = sequelize.MAIN_DB_NAME.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    case_id: {
+    course_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'cases', // Use string reference
-        key: 'id',
+        model: Course, // Use string reference
+        key: 'course_id',
       },
     },
     attachments: {
@@ -71,8 +73,8 @@ const SupportTicket = sequelize.MAIN_DB_NAME.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'users', // Use string reference
-        key: 'id',
+        model: User, // Use string reference
+        key: 'user_id',
       },
     },
     resolved_at: {
@@ -131,8 +133,8 @@ const TicketMessage = sequelize.MAIN_DB_NAME.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users', // Use string reference
-        key: 'id',
+        model: User, // Use string reference
+        key: 'user_id',
       },
     },
     message: {
@@ -206,8 +208,8 @@ const TicketAttachment = sequelize.MAIN_DB_NAME.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users', // Use string reference
-        key: 'id',
+        model: User, // Use string reference
+        key: 'user_id',
       },
     },
     created_at: {
@@ -257,8 +259,8 @@ const FAQ = sequelize.MAIN_DB_NAME.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users', // Use string reference
-        key: 'id',
+        model: User, // Use string reference
+        key: 'user_id',
       },
     },
     created_at: {

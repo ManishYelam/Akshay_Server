@@ -133,7 +133,7 @@ module.exports = {
     }
   },
 
-   // Get merged PDF file
+  // Get merged PDF file
   getMergedPdf: async (req, res) => {
     try {
       const { userId } = req.params;

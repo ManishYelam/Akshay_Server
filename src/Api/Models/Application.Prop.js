@@ -2,7 +2,7 @@ const { DataTypes, Op } = require('sequelize');
 const { sequelize } = require('../../Config/Database/db.config');
 
 const ApplicationPropAttribute = {
-  id: {
+  app_prop_id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,

@@ -4,7 +4,7 @@ const { sequelize } = require('../../Config/Database/db.config');
 const ListOfValues = sequelize.MAIN_DB_NAME.define(
   'ListOfValues',
   {
-    id: {
+    lov_id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,

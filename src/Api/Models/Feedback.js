@@ -13,6 +13,10 @@ const Feedback = sequelize.MAIN_DB_NAME.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: User,
+        key: 'user_id',
+      },
     },
     rating: {
       type: DataTypes.INTEGER,

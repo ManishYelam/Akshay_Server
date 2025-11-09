@@ -1,5 +1,5 @@
 const express = require('express');
-const authMiddleware = require('../Middlewares/authorizationMiddleware');
+const { authenticate } = require('../Middlewares/authorizationMiddleware');
 const roleAuth = require('../Middlewares/roleAuth');
 const validate = require('../Middlewares/validateMiddleware');
 const {
@@ -13,14 +13,14 @@ const feedbackRouter = express.Router();
 
 // Routes
 feedbackRouter
-  .post('/submit', authMiddleware, validate(submitFeedback), feedbackController.submitFeedback)
-  .get('/my-feedback', authMiddleware, validate(getUserFeedback), feedbackController.getUserFeedback)
+  .post('/submit', authenticate, validate(submitFeedback), feedbackController.submitFeedback)
+  .get('/my-feedback', authenticate, validate(getUserFeedback), feedbackController.getUserFeedback)
 
   // Admin only routes
-  .get('/', authMiddleware, roleAuth(['admin']), validate(getAllFeedback), feedbackController.getAllFeedback)
-  .get('/stats', authMiddleware, roleAuth(['admin']), feedbackController.getFeedbackStats)
-  .get('/:id', authMiddleware, feedbackController.getFeedbackById)
-  .patch('/:id/status', authMiddleware, roleAuth(['admin']), validate(updateStatus), feedbackController.updateFeedbackStatus)
-  .delete('/:id', authMiddleware, roleAuth(['admin']), feedbackController.deleteFeedback);
+  .get('/', authenticate, roleAuth(['admin']), validate(getAllFeedback), feedbackController.getAllFeedback)
+  .get('/stats', authenticate, roleAuth(['admin']), feedbackController.getFeedbackStats)
+  .get('/:id', authenticate, feedbackController.getFeedbackById)
+  .patch('/:id/status', authenticate, roleAuth(['admin']), validate(updateStatus), feedbackController.updateFeedbackStatus)
+  .delete('/:id', authenticate, roleAuth(['admin']), feedbackController.deleteFeedback);
 
 module.exports = feedbackRouter;

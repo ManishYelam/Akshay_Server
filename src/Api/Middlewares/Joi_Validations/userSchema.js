@@ -63,9 +63,7 @@ const generateUserSchema = async (isUpdate = false) => {
       }),
     address: Joi.string().max(500).optional(),
     occupation: Joi.string().max(500).optional(),
-    role: isUpdate
-      ? Joi.string().valid('client', 'admin', 'advocate').optional()
-      : Joi.string().valid('client', 'admin', 'advocate').required(),
+    role: isUpdate ? Joi.string().valid('admin', 'student').optional() : Joi.string().valid('admin', 'student').required(),
     reg_link_status: Joi.string().valid('active', 'expired', 'pending').optional().messages({
       'any.only': 'reg_link_status must be one of active, expired, or pending',
     }),

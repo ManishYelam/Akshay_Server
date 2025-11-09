@@ -3,7 +3,7 @@ const supportRouter = express.Router();
 const Joi = require('joi');
 const validate = require('../Middlewares/validateMiddleware');
 const roleMiddleware = require('../Middlewares/roleAuth');
-const authMiddleware = require('../Middlewares/authorizationMiddleware');
+const { authenticate } = require('../Middlewares/authorizationMiddleware');
 const SupportController = require('../Controllers/SupportController');
 const {
   ticketSchema,
@@ -23,7 +23,7 @@ supportRouter
   .get('/faqs', validate(faqQuerySchema, 'query'), SupportController.getFAQs)
 
   // Apply authentication middleware to all subsequent routes
-  .use(authMiddleware)
+  .use(authenticate)
 
   // Client routes (accessible to all authenticated users - client, advocate, admin)
   .post('/tickets', validate(ticketSchema), SupportController.createTicket)

@@ -2,7 +2,7 @@ const { hashPassword } = require('../Helpers/hashPassword');
 const { Op } = require('sequelize');
 const { generateOTPTimestamped, verifyOTPTimestamped, generateStrongPassword } = require('../../Utils/OTP');
 const { sendLaunchCodeEmail, sendVerificationEmail } = require('./email.Service');
-const { User, Role, Permission,  Payment, UserDocument } = require('../Models/Association');
+const { User, Role, Permission, Payment, UserDocument } = require('../Models/Association');
 const { sequelize } = require('../../Config/Database/db.config');
 
 const SERVER_URL = process.env.SERVER_URL;
@@ -11,15 +11,19 @@ module.exports = {
   createUser: async data => {
     try {
       const { otp, expiryTime } = generateOTPTimestamped(10, 3600000, true);
-      Object.assign(data, { otp, expiryTime });
-      const hashedPassword = await hashPassword(data.password);
-      data.password = hashedPassword;
+
+      data.otp = otp;
+      data.expiryTime = expiryTime;
 
       const newUser = await User.create(data);
 
-      const verificationUrl = `${SERVER_URL}/api/users/verify?userId=${newUser.id}&otp=${otp}`;
-      const userName = `${newUser.full_name}`;
-      await sendLaunchCodeEmail(newUser.id, userName, newUser.email, verificationUrl, otp);
+      const userId = newUser.user_id;
+      const userName = newUser.full_name;
+
+      const verificationUrl = `${SERVER_URL}/api/users/verify?userId=${userId}&otp=${otp}`;
+
+      // Send verification email
+      await sendLaunchCodeEmail(userId, userName, newUser.email, verificationUrl, otp);
 
       return newUser;
     } catch (error) {
