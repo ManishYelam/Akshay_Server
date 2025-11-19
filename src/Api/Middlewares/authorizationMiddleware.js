@@ -15,7 +15,7 @@ exports.authenticate = async (req, res, next) => {
 
   try {
     const decoded = verifyToken(token);
-    const user = await User.findByPk(decoded.id);
+    const user = await User.findByPk(decoded.user_id);
 
     if (!user) {
       return res.status(401).json({ message: 'Unauthorized: User not found' });

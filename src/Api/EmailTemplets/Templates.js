@@ -466,11 +466,6 @@ module.exports = {
             <p>You can securely log in here:</p>
             <a href="${FRONTEND_URL}/login" class="btn">Login Now</a>
 
-            <p><strong>OR</strong></p>
-
-            <p>To ensure maximum security, we recommend updating your password regularly.</p>
-            <a href="${data.resetPasswordUrl}" class="btn-reset">Reset Password</a>
-
             <p>If you have any concerns, please reach out to our support team.</p>
         </div>
 
@@ -486,7 +481,7 @@ module.exports = {
 </html>
 `,
   // ✅
-  sendResetPasswordTemplate: data => `
+ sendResetPasswordTemplate: data => `
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -575,23 +570,6 @@ module.exports = {
               background-color: #218838;
               transform: translateY(-2px);
           }
-          .btn-secondary {
-              background-color: #007bff;
-              color: white;
-              padding: 12px 25px;
-              font-size: 16px;
-              font-weight: bold;
-              border-radius: 6px;
-              text-decoration: none;
-              display: inline-block;
-              margin-top: 15px;
-              box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-              transition: all 0.3s ease;
-          }
-          .btn-secondary:hover {
-              background-color: #0056b3;
-              transform: translateY(-2px);
-          }
           .footer {
               font-size: 12px;
               color: #888;
@@ -612,35 +590,27 @@ module.exports = {
   </head>
   <body>
       <div class="container">
-          <!-- Header Section -->
+          
           <div class="header">
               <div class="logo-container">
                   <img src="https://res.cloudinary.com/dhbkxhxsy/image/upload/v1735644524/fkw33za6df1tejmc9zxy.jpg" alt="Company Logo">
               </div>
               <h2>Password Reset Request</h2>
           </div>
-  
-          <!-- Main Content -->
+
           <div class="content">
               <h2 style="color: #dc3545;">🔑 Reset Your Password</h2>
               <p>Hi <strong>${data.userName}</strong>,</p>
               <p>We received a request to reset your password. Use the code below to verify your request:</p>
-  
-              <!-- OTP Code Box -->
+
               <div class="code-container">${data.otp}</div>
-  
-              <p>Click below to verify reset password:</p>
-              <a href="${data.resetLink}" class="btn">Verify Reset Password</a>
-  
-              <p><strong>OR</strong></p>
-  
-              <p>Manually reset your password by clicking below:</p>
-              <a href="${data.resetPasswordLink}" class="btn-secondary">Reset Password Manually</a>
-  
-              <p>If you didn’t request this, please ignore this email or contact our support team.</p>
+
+              <p>Click below to verify and reset your password:</p>
+              <a href="${data.resetLink}" class="btn">Reset Password</a>
+
+              <p>If you didn’t request this, please ignore this email.</p>
           </div>
-  
-          <!-- Footer Section -->
+
           <div class="footer">
               <p>&copy; ${new Date().getFullYear()} ${data.companyName}. All rights reserved.</p>
               <p>${data.companyName}, 123 Secure Lane, Safety City, SC 45678</p>
@@ -651,6 +621,7 @@ module.exports = {
   </body>
   </html>
   `,
+
   // ✅ 🚀
   welcomeTemplate: data => `
 <!DOCTYPE html>

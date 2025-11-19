@@ -80,10 +80,7 @@ module.exports = {
       userId,
       userName,
       otp,
-      resetLink: `${FRONTEND_URL}/forgot-password/api/users/verify?userId=${userId}&otp=${otp}`,
-      resetPasswordLink: `${FRONTEND_URL}/forgot-password/verify-reset-password?userId=${userId}&token=${otp}`,
-      // resetLink: `${SERVER_URL}/api/users/verify?userId=${userId}&otp=${otp}`,
-      // resetPasswordLink: `${SERVER_URL}/verify-reset-password?userId=${userId}&token=${otp}`,
+      resetLink: `${FRONTEND_URL}/set-password/${user_Email}`,
     };
     sendMail(user_Email, subject, template_Name, template_Data);
   },

@@ -120,18 +120,18 @@ const userAttribute = {
 const User = sequelize.MAIN_DB_NAME.define('User', userAttribute, {
   tableName: 'tbl_user',
   timestamps: true,
-  hooks: {
-    beforeCreate: async user => {
-      if (user.password) {
-        user.password = await bcrypt.hash(user.password, 12);
-      }
-    },
-    beforeUpdate: async user => {
-      if (user.changed('password')) {
-        user.password = await bcrypt.hash(user.password, 12);
-      }
-    },
-  },
+  // hooks: {
+  //   beforeCreate: async user => {
+  //     if (user.password) {
+  //       user.password = await bcrypt.hash(user.password, 12);
+  //     }
+  //   },
+  //   beforeUpdate: async user => {
+  //     if (user.changed('password')) {
+  //       user.password = await bcrypt.hash(user.password, 12);
+  //     }
+  //   },
+  // },
 });
 
 User.prototype.checkPassword = async function (candidatePassword) {

@@ -49,7 +49,7 @@ module.exports = {
   changePassword: async (req, res) => {
     const { old_password, new_password } = req.body;
     try {
-      const result = await AuthService.changePassword(req.user_info.id, old_password, new_password);
+      const result = await AuthService.changePassword(req.user_info.user_id, old_password, new_password);
       res.status(200).json(result);
     } catch (error) {
       res.status(400).json({ error: error.message });
