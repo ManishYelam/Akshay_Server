@@ -481,7 +481,7 @@ module.exports = {
 </html>
 `,
   // ✅
- sendResetPasswordTemplate: data => `
+  sendResetPasswordTemplate: data => `
   <!DOCTYPE html>
   <html lang="en">
   <head>
